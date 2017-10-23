@@ -2,8 +2,15 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import query from "../queries/current_user";
 import { Link } from "react-router";
+import gql from "graphql-tag";
+import mutation from "../mutations/mutation";
 
 class Header extends Component {
+  onLogoutClick(e) {
+    e.preventDefault();
+    this.props.mutate({});
+  }
+
   renderButtons() {
     const { loading, user } = this.props.data;
     // if still loading, shows nothing
@@ -12,7 +19,11 @@ class Header extends Component {
     }
     if (user) {
       // if user is not null (logged in)
-      return <div>Logout</div>;
+      return (
+        <li onClick={onLogoutClick.bind(this)}>
+          <a>Logout</a>
+        </li>
+      );
     } else {
       return (
         // if user is null (logged out)
@@ -40,4 +51,4 @@ class Header extends Component {
   }
 }
 
-export default graphql(query)(Header);
+export default graphql(mutation)(graphql(query)(Header));
