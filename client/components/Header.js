@@ -3,12 +3,14 @@ import { graphql } from "react-apollo";
 import query from "../queries/current_user";
 import { Link } from "react-router";
 import gql from "graphql-tag";
-import mutation from "../mutations/mutation";
+import mutation from "../mutations/logout";
 
 class Header extends Component {
   onLogoutClick(e) {
     e.preventDefault();
-    this.props.mutate({});
+    this.props.mutate({
+      refetchQueries: [{ query }]
+    });
   }
 
   renderButtons() {
@@ -20,7 +22,7 @@ class Header extends Component {
     if (user) {
       // if user is not null (logged in)
       return (
-        <li onClick={onLogoutClick.bind(this)}>
+        <li onClick={this.onLogoutClick.bind(this)}>
           <a>Logout</a>
         </li>
       );
